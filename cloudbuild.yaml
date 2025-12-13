@@ -1,0 +1,30 @@
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - .
+
+  # Push Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - django-app
+      - --image=us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - --region=us-central1
+      - --platform=managed
+      - --allow-unauthenticated
+      - --set-env-vars=SECRET_KEY=my-secret-key
+
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
