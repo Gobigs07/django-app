@@ -1,23 +1,26 @@
 steps:
+  # Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - build
       - -t
-      - us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - us-east4-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/django-app:$SHORT_SHA
       - .
 
+  # Push Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - push
-      - us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - us-east4-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/django-app:$SHORT_SHA
 
+  # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - run
       - deploy
       - django-app
-      - --image=us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - --image=us-east4-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/django-app:$SHORT_SHA
       - --region=us-east4
       - --platform=managed
       - --allow-unauthenticated
@@ -27,4 +30,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
-  - us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+  - us-east4-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/django-app:$SHORT_SHA
