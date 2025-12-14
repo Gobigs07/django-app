@@ -17,7 +17,7 @@ steps:
       - run
       - deploy
       - django-app
-      - --image=us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - --image=us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
       - --region=us-east4
       - --platform=managed
       - --allow-unauthenticated
