@@ -3,13 +3,13 @@ steps:
     args:
       - build
       - -t
-      - us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
       - .
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - push
-      - us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+      - us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
@@ -18,7 +18,7 @@ steps:
       - deploy
       - django-app
       - --image=us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
-      - --region=us-central1
+      - --region=us-east4
       - --platform=managed
       - --allow-unauthenticated
       - --set-env-vars=SECRET_KEY=my-secret-key
@@ -27,4 +27,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
+  - us-east4-docker.pkg.dev/$PROJECT_ID/django-repo/django-app:$SHORT_SHA
